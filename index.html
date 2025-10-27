@@ -3645,6 +3645,48 @@
             });
         });
 
-    </script>
+    </script><script type="module">
+  // 1️⃣ Import Firebase SDK
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { getDatabase, ref, set, push, get, child } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+  // 2️⃣ Konfigurasi proyekmu
+  const firebaseConfig = {
+    apiKey: "AIzaSyXXXXXXX",
+    authDomain: "kasir-kontan-web.firebaseapp.com",
+    projectId: "kasir-kontan-web",
+    storageBucket: "kasir-kontan-web.appspot.com",
+    messagingSenderId: "1234567890",
+    appId: "1:1234567890:web:abcdef123456"
+  };
+
+  // 3️⃣ Inisialisasi Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  // 4️⃣ Simpan transaksi ke Firebase
+  function simpanTransaksi(namaProduk, totalHarga) {
+    const transaksiBaru = push(ref(db, "transaksi/"));
+    set(transaksiBaru, {
+      produk: namaProduk,
+      total: totalHarga,
+      waktu: new Date().toISOString()
+    });
+    console.log("✅ Transaksi tersimpan di Firebase!");
+  }
+
+  // 5️⃣ Ambil semua transaksi
+  async function ambilTransaksi() {
+    const snapshot = await get(child(ref(db), "transaksi/"));
+    if (snapshot.exists()) {
+      console.log("📦 Data transaksi:", snapshot.val());
+      return snapshot.val();
+    } else {
+      console.log("Belum ada transaksi.");
+      return {};
+    }
+  }
+</script>
+S
 </body>
 </html>
